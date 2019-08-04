@@ -10,16 +10,15 @@
     {
         private static void Main(string[] args)
         {
-            const int start = 4321;
-            const int result = 333;
-            const int tries = 4;
+            const int start = 303;
+            const int result = 100;
+            const int tries = 3;
 
             var ops = new List<Operation>
             {
                 new SortAsc(),
-                new Replace("2","3"),
-                new Replace("1","3"),
-                new Remove()
+                new Plus(1),
+                new Times(3)
             };
 
             Parallel.ForEach(GetPermutationsWithRept(ops, tries), combo =>

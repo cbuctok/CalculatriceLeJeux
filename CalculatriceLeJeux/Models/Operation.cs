@@ -7,29 +7,23 @@
         int Do(int x);
     }
 
-    public class SortAsc : Operation
+    public class Plus : Operation
     {
+        public readonly int What;
+
+        public Plus(int what)
+        {
+            What = what;
+        }
+
         public int Do(int x)
         {
-            return int.Parse(string.Concat(x.ToString().OrderBy(c => c)));
+            return x + What;
         }
 
         public override string ToString()
         {
-            return base.ToString().Split('.').Last();
-        }
-    }
-
-    public class SortDes : Operation
-    {
-        public int Do(int x)
-        {
-            return int.Parse(string.Concat(x.ToString().OrderByDescending(c => c)));
-        }
-
-        public override string ToString()
-        {
-            return base.ToString().Split('.').Last();
+            return $"{base.ToString().Split('.').Last()}({What})";
         }
     }
 
@@ -67,6 +61,52 @@
         public override string ToString()
         {
             return $"{base.ToString().Split('.').Last()}({What} => {With})";
+        }
+    }
+
+    public class SortAsc : Operation
+    {
+        public int Do(int x)
+        {
+            return int.Parse(string.Concat(x.ToString().OrderBy(c => c)));
+        }
+
+        public override string ToString()
+        {
+            return base.ToString().Split('.').Last();
+        }
+    }
+
+    public class SortDes : Operation
+    {
+        public int Do(int x)
+        {
+            return int.Parse(string.Concat(x.ToString().OrderByDescending(c => c)));
+        }
+
+        public override string ToString()
+        {
+            return base.ToString().Split('.').Last();
+        }
+    }
+
+    public class Times : Operation
+    {
+        public readonly int What;
+
+        public Times(int what)
+        {
+            What = what;
+        }
+
+        public int Do(int x)
+        {
+            return x * What;
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString().Split('.').Last()}({What})";
         }
     }
 }
