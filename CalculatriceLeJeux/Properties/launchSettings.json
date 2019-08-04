@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CalculatriceLeJeux": {
+      "commandName": "Project",
+      "commandLineArgs": "10 4 o12 o100 o15 /2 x5 delete"
+    }
+  }
+}

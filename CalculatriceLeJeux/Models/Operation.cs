@@ -3,70 +3,122 @@
     using System;
     using System.Linq;
 
+    public enum Position
+    {
+        Start,
+        End
+    }
+
     public interface Operation
     {
         int Do(int x);
     }
 
-    public class Multiplication : Operation
+    public class Add : Operation
     {
-        public readonly int What;
+        public readonly string What;
 
-        public Multiplication(int what)
+        public Add(int what) => What = what.ToString();
+
+        public int Do(int x) => int.Parse($"{x}{What}");
+
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
+    }
+
+    public class Cut : Operation
+    {
+        public readonly string What;
+
+        public Cut(int what) => What = what.ToString();
+
+        public int Do(int x)
+        {
+            var t = x.ToString().Replace(What, string.Empty);
+            if (string.IsNullOrWhiteSpace(t)) return 0;
+            return int.Parse(t);
+        }
+
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
+    }
+
+    public class Delete : Operation
+    {
+        public readonly string What;
+        public readonly Position Where;
+
+        public Delete()
+        {
+        }
+
+        public Delete(string what, Position where = Position.Start)
         {
             What = what;
+            Where = where;
         }
 
         public int Do(int x)
         {
-            return x * What;
+            var numberS = x.ToString();
+            int k;
+            if (Where == Position.Start)
+                k = numberS.IndexOf(What);
+            else
+                k = numberS.LastIndexOf(What);
+            if (k < 0) return x;
+            var s = numberS.Remove(k, 1);
+            if (string.IsNullOrWhiteSpace(s)) return x;
+            return int.Parse(s);
         }
 
-        public override string ToString()
-        {
-            return $"{base.ToString().Split('.').Last()}({What})";
-        }
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What}, {Where})";
     }
 
     public class Division : Operation
     {
         public readonly int What;
 
-        public Division(int what)
-        {
-            What = what;
-        }
+        public Division(int what) => What = what;
 
         public int Do(int x)
         {
-            if (x % What != 0) throw new InvalidOperationException("Has remainder");
+            if (x % What != 0) return x;
             return x / What;
         }
 
-        public override string ToString()
-        {
-            return $"{base.ToString().Split('.').Last()}({What})";
-        }
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
+    }
+
+    public class Minus : Operation
+    {
+        public readonly int What;
+
+        public Minus(int what) => What = what;
+
+        public int Do(int x) => x - What;
+
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
+    }
+
+    public class Multiplication : Operation
+    {
+        public readonly int What;
+
+        public Multiplication(int what) => What = what;
+
+        public int Do(int x) => x * What;
+
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
     }
 
     public class Plus : Operation
     {
         public readonly int What;
 
-        public Plus(int what)
-        {
-            What = what;
-        }
+        public Plus(int what) => What = what;
 
-        public int Do(int x)
-        {
-            return x + What;
-        }
+        public int Do(int x) => x + What;
 
-        public override string ToString()
-        {
-            return $"{base.ToString().Split('.').Last()}({What})";
-        }
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
     }
 
     public class Remove : Operation
@@ -78,30 +130,7 @@
             return int.Parse(str.Remove(str.Length - 1));
         }
 
-        public override string ToString()
-        {
-            return base.ToString().Split('.').Last();
-        }
-    }
-
-    public class Add : Operation
-    {
-        public readonly string What;
-
-        public Add(int what)
-        {
-            What = what.ToString();
-        }
-
-        public int Do(int x)
-        {
-            return int.Parse($"{x}{What}");
-        }
-
-        public override string ToString()
-        {
-            return $"{base.ToString().Split('.').Last()}({What})";
-        }
+        public override string ToString() => base.ToString().Split('.').Last();
     }
 
     public class Replace : Operation
@@ -115,40 +144,22 @@
             With = with;
         }
 
-        public int Do(int x)
-        {
-            return int.Parse(x.ToString().Replace(What, With));
-        }
+        public int Do(int x) => int.Parse(x.ToString().Replace(What, With));
 
-        public override string ToString()
-        {
-            return $"{base.ToString().Split('.').Last()}({What} => {With})";
-        }
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What} => {With})";
     }
 
     public class SortAsc : Operation
     {
-        public int Do(int x)
-        {
-            return int.Parse(string.Concat(x.ToString().OrderBy(c => c)));
-        }
+        public int Do(int x) => int.Parse(string.Concat(x.ToString().OrderBy(c => c)));
 
-        public override string ToString()
-        {
-            return base.ToString().Split('.').Last();
-        }
+        public override string ToString() => base.ToString().Split('.').Last();
     }
 
     public class SortDes : Operation
     {
-        public int Do(int x)
-        {
-            return int.Parse(string.Concat(x.ToString().OrderByDescending(c => c)));
-        }
+        public int Do(int x) => int.Parse(string.Concat(x.ToString().OrderByDescending(c => c)));
 
-        public override string ToString()
-        {
-            return base.ToString().Split('.').Last();
-        }
+        public override string ToString() => base.ToString().Split('.').Last();
     }
 }
