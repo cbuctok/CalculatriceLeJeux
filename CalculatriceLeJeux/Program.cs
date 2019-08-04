@@ -10,15 +10,16 @@
     {
         private static void Main(string[] args)
         {
-            const int start = 303;
-            const int result = 100;
-            const int tries = 3;
+            const int start = 423;
+            const int result = 123;
+            const int tries = 4;
 
             var ops = new List<Operation>
             {
                 new SortAsc(),
-                new Plus(1),
-                new Times(3)
+                new Add(1),
+                new Division(2),
+                new Remove()
             };
 
             Parallel.ForEach(GetPermutationsWithRept(ops, tries), combo =>
@@ -26,9 +27,16 @@
                 var x = start;
                 foreach (var op in combo)
                 {
-                    x = op.Do(x);
-                    if (x == result)
-                        Console.WriteLine(string.Join(", ", combo));
+                    try
+                    {
+                        x = op.Do(x);
+                        if (x == result)
+                            Console.WriteLine(string.Join(", ", combo));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        break;
+                    }
                 }
             });
         }

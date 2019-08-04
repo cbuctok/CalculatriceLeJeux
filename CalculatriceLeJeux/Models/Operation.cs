@@ -1,10 +1,52 @@
 ﻿namespace CalculatriceLeJeux.Models
 {
+    using System;
     using System.Linq;
 
     public interface Operation
     {
         int Do(int x);
+    }
+
+    public class Multiplication : Operation
+    {
+        public readonly int What;
+
+        public Multiplication(int what)
+        {
+            What = what;
+        }
+
+        public int Do(int x)
+        {
+            return x * What;
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString().Split('.').Last()}({What})";
+        }
+    }
+
+    public class Division : Operation
+    {
+        public readonly int What;
+
+        public Division(int what)
+        {
+            What = what;
+        }
+
+        public int Do(int x)
+        {
+            if (x % What != 0) throw new InvalidOperationException("Has remainder");
+            return x / What;
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString().Split('.').Last()}({What})";
+        }
     }
 
     public class Plus : Operation
@@ -39,6 +81,26 @@
         public override string ToString()
         {
             return base.ToString().Split('.').Last();
+        }
+    }
+
+    public class Add : Operation
+    {
+        public readonly string What;
+
+        public Add(int what)
+        {
+            What = what.ToString();
+        }
+
+        public int Do(int x)
+        {
+            return int.Parse($"{x}{What}");
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString().Split('.').Last()}({What})";
         }
     }
 
@@ -87,26 +149,6 @@
         public override string ToString()
         {
             return base.ToString().Split('.').Last();
-        }
-    }
-
-    public class Times : Operation
-    {
-        public readonly int What;
-
-        public Times(int what)
-        {
-            What = what;
-        }
-
-        public int Do(int x)
-        {
-            return x * What;
-        }
-
-        public override string ToString()
-        {
-            return $"{base.ToString().Split('.').Last()}({What})";
         }
     }
 }
