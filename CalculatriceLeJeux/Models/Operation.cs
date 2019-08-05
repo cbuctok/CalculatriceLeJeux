@@ -88,6 +88,32 @@
         public override string ToString() => $"{base.ToString().Split('.').Last()}({What})";
     }
 
+    public class Insert : Operation
+    {
+        public readonly string What;
+        public readonly int Where;
+
+        public Insert(string what)
+        {
+            What = what;
+        }
+
+        public Insert(string what, int where)
+        {
+            What = what;
+            Where = where;
+        }
+
+        public int Do(int x)
+        {
+            var str = x.ToString();
+            if (str.Length < Where) return x;
+            return int.Parse(str.Insert(Where, What));
+        }
+
+        public override string ToString() => $"{base.ToString().Split('.').Last()}({What},{Where})";
+    }
+
     public class Minus : Operation
     {
         public readonly int What;
@@ -149,6 +175,18 @@
         public override string ToString() => $"{base.ToString().Split('.').Last()}({What} => {With})";
     }
 
+    public class Reverse : Operation
+    {
+        public int Do(int x)
+        {
+            var str = x.ToString();
+            str.Reverse();
+            return int.Parse(str);
+        }
+
+        public override string ToString() => base.ToString().Split('.').Last();
+    }
+
     public class SortAsc : Operation
     {
         public int Do(int x) => int.Parse(string.Concat(x.ToString().OrderBy(c => c)));
@@ -159,6 +197,21 @@
     public class SortDes : Operation
     {
         public int Do(int x) => int.Parse(string.Concat(x.ToString().OrderByDescending(c => c)));
+
+        public override string ToString() => base.ToString().Split('.').Last();
+    }
+
+    public class Sum : Operation
+    {
+        public int Do(int x)
+        {
+            var str = x.ToString().Trim();
+            var result = 0;
+            for (int i = 0; i < str.Length; i++)
+                result += str[i] - 48;
+
+            return result;
+        }
 
         public override string ToString() => base.ToString().Split('.').Last();
     }

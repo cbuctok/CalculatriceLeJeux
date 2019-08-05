@@ -2,7 +2,7 @@
   "profiles": {
     "CalculatriceLeJeux": {
       "commandName": "Project",
-      "commandLineArgs": "10 4 o12 o100 o15 /2 x5 delete"
+      "commandLineArgs": "4505 3 o7 o20 o242 cut5 insert2 +2 delete"
     }
   }
 }
