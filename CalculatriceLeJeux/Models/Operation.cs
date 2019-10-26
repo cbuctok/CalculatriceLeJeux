@@ -179,9 +179,9 @@
     {
         public int Do(int x)
         {
-            var str = x.ToString();
-            str.Reverse();
-            return int.Parse(str);
+            var str = x.ToString().ToCharArray();
+            Array.Reverse(str);
+            return int.Parse(new string(str));
         }
 
         public override string ToString() => base.ToString().Split('.').Last();
